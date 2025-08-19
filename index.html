@@ -1,0 +1,612 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>PaiseKamai  WEBSITE OWNER APPU PANDEY  — Tasks · Games · Ads (Single File + Withdraw)</title>
+<style>
+  :root{
+    --card: rgba(255,255,255,0.95);
+    --accent: #0b76ff;
+    --accent2: #28a745;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial;
+    min-height:100vh;
+    background: linear-gradient(270deg,#ff9a9e,#fad0c4,#a18cd1,#fbc2eb);
+    background-size: 600% 600%;
+    animation: bgAnim 18s ease infinite;
+    color:#111;
+  }
+  @keyframes bgAnim {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+  }
+  header{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;background:rgba(255,255,255,0.06);backdrop-filter: blur(6px)}
+  .brand{font-weight:800}
+  .hdr-right{display:flex;gap:12px;align-items:center}
+  button.btn{background:var(--accent);color:white;border:none;padding:8px 12px;border-radius:8px;cursor:pointer}
+  button.ghost{background:transparent;border:1px solid rgba(0,0,0,0.08);padding:8px 12px;border-radius:8px;cursor:pointer}
+  main{max-width:1000px;margin:20px auto;padding:16px}
+  nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  nav .tab{background:var(--card);padding:10px 12px;border-radius:10px;cursor:pointer}
+  nav .tab.active{box-shadow:0 6px 18px rgba(0,0,0,0.08);transform:translateY(-2px)}
+  .card{background:var(--card);border-radius:12px;padding:16px;margin-bottom:14px;box-shadow:0 6px 20px rgba(11,33,66,0.04)}
+  .small{font-size:13px;color:#333}
+  .flex{display:flex;gap:12px;align-items:center}
+  input,select,textarea{width:100%;padding:8px;border-radius:8px;border:1px solid #e6eef9}
+  canvas{display:block;margin:12px auto;border-radius:8px;max-width:100%}
+  .ads-area{background:#f7f7fb;border:1px dashed #ddd;padding:12px;border-radius:8px;text-align:center}
+  footer{text-align:center;padding:10px;color:#222}
+  @media(max-width:700px){ header{flex-direction:column;align-items:flex-start} .flex{flex-direction:column;align-items:stretch} }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">PaiseKamai — Demo WEBSITE OWNER APPU PANDEY SIR       mobile number : 6387420934</div>
+  <div class="hdr-right">
+    <div id="hdrBalance" class="small">Balance: 0</div>
+    <div id="hdrUser" class="small">Not logged in</div>
+    <button id="btnOpenAuth" class="btn">Login / Register</button>
+  </div>
+</header>
+
+<main>
+  <nav id="navBar">
+    <div class="tab active" data-target="home">Home</div>
+    <div class="tab" data-target="tasks">Tasks</div>
+    <div class="tab" data-target="games">Games</div>
+    <div class="tab" data-target="ads">Watch Ads</div>
+    <div class="tab" data-target="profile">Profile</div>
+  </nav>
+
+  <!-- HOME -->
+  <section id="home" class="card">
+    <h2>Welcome to PaiseKamai (Demo)</h2>
+    <p class="small">Demo environment — real payouts require backend, payment gateway and KYC. नीचे Tasks, Games और Ads देखो — सभी से coins कमाओ।</p>
+  </section>
+
+  <!-- TASKS -->
+  <section id="tasks" class="card" style="display:none">
+    <h3>Infinite Tasks</h3>
+    <p class="small">हर बार नया task generate होता है — complete करो और balance बढ़ाओ।</p>
+    <div id="tasksList"></div>
+  </section>
+
+  <!-- GAMES -->
+  <section id="games" class="card" style="display:none">
+    <h3>Games — Bubble Click & Shooter</h3>
+    <div class="flex" style="flex-wrap:wrap">
+      <div style="flex:1;min-width:280px">
+        <div class="small">Bubble Click Game</div>
+        <canvas id="bubbleCanvas" width="360" height="260"></canvas>
+        <div class="flex"><button id="startBubble" class="btn">Start Bubble (Free)</button><div class="small" id="bubbleScore">Score: 0</div></div>
+        <div class="small">Target: reach score 12 → reward 6 coins</div>
+      </div>
+
+      <div style="flex:1;min-width:280px">
+        <div class="small">Shooter Game</div>
+        <canvas id="shooterCanvas" width="360" height="260"></canvas>
+        <div class="flex"><button id="startShooter" class="btn">Start Shooter</button><div class="small" id="shooterScore">Score: 0</div></div>
+        <div class="small">Target: hit 6 targets → reward 8 coins</div>
+        <div class="small" style="margin-top:8px;color:#555">Controls: mouse move + click (desktop), touch drag + tap (mobile).</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ADS -->
+  <section id="ads" class="card" style="display:none">
+    <h3>Watch Ads & Earn</h3>
+    <p class="small">(A) Demo ad — click to watch a simulated 5s ad and earn coins immediately.<br>
+       (B) Below that a placeholder is provided where you can paste your real AdSense/AdMob code (see instructions).</p>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button id="watchDemoAd" class="btn">Watch Demo Ad (Earn 5)</button>
+      <button id="watchLongDemo" class="ghost">Watch Longer Demo (Earn 12)</button>
+    </div>
+
+    <hr style="margin:12px 0">
+
+    <div class="card">
+      <h4 class="small">Real Ad Placement (placeholder)</h4>
+      <div class="ads-area" id="realAdArea">
+        <!--
+          PLACEHOLDER FOR REAL ADS:
+          -----------------------------------------
+          To insert your real Google AdSense ad, paste the snippet Google gives you here.
+          Example (replace with your actual publisher & slot):
+          
+          <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXX" crossorigin="anonymous"></script>
+          <ins class="adsbygoogle"
+               style="display:block"
+               data-ad-client="ca-pub-XXXXXXXXXXXX"
+               data-ad-slot="YYYYYYYYYY"
+               data-ad-format="auto"
+               data-full-width-responsive="true"></ins>
+          <script>
+               (adsbygoogle = window.adsbygoogle || []).push({});
+          </script>
+
+          IMPORTANT:
+          - Replace ca-pub-XXXXXXXX with your publisher id.
+          - Replace data-ad-slot with your ad unit id.
+          - Google may require you to serve from an allowed domain; test locally using their guidance (or test on deployed domain).
+        -->
+        <div class="small" style="color:#666">Drop your AdSense / AdMob code here (see comments in source).</div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- PROFILE -->
+  <section id="profile" class="card" style="display:none">
+    <h3>Profile</h3>
+    <div id="profileArea"></div>
+  </section>
+
+</main>
+
+<!-- AUTH MODAL (simple) -->
+<div id="authModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);align-items:center;justify-content:center">
+  <div style="background:var(--card);padding:18px;border-radius:12px;width:92%;max-width:420px">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <h3>Login / Register</h3>
+      <button onclick="closeAuth()" class="ghost">✕</button>
+    </div>
+    <div style="margin-top:8px">
+      <label class="small">Name / Username</label><input id="inName" />
+      <label class="small" style="margin-top:6px">Password</label><input id="inPass" type="password" />
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <button id="btnRegisterAuth" class="btn">Register</button>
+        <button id="btnLoginAuth" class="ghost">Login</button>
+      </div>
+      <div id="authMsg" class="small" style="margin-top:8px;color:green"></div>
+    </div>
+  </div>
+</div>
+
+<!-- WITHDRAW MODAL (new) -->
+<div id="wdModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;z-index:70">
+  <div style="background:var(--card);padding:18px;border-radius:12px;width:92%;max-width:420px">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <h3>Withdraw Coins</h3>
+      <button onclick="closeWithdraw()" class="ghost">✕</button>
+    </div>
+    <div style="margin-top:8px">
+      <label class="small">Amount (coins)</label>
+      <input id="wdAmount" type="number" min="1" step="1" />
+      <label class="small" style="margin-top:6px">Method</label>
+      <select id="wdMethod">
+        <option value="UPI">UPI</option>
+        <option value="Bank">Bank</option>
+        <option value="Paytm">Paytm</option>
+      </select>
+      <label class="small" style="margin-top:6px">UPI ID / Account detail</label>
+      <input id="wdDetail" placeholder="eg: yourname@upi or bank acc no" />
+      <div class="small" style="margin-top:8px;color:#555">Note: यह demo है — real transfer के लिए backend/verification ज़रूरी है।</div>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <button class="btn" onclick="submitWithdraw()">Submit</button>
+        <button class="ghost" onclick="closeWithdraw()">Cancel</button>
+      </div>
+      <div id="wdMsg" class="small" style="margin-top:8px;color:green"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Demo Ad overlay (used by demo ad watch) -->
+<div id="adOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);color:white;align-items:center;justify-content:center;flex-direction:column;z-index:60">
+  <div style="background:#000;padding:16px;border-radius:10px;text-align:center;max-width:420px">
+    <div id="adText" style="font-weight:700;margin-bottom:10px">Demo Ad — watching...</div>
+    <div id="adCountdown" style="font-size:28px">5</div>
+    <div class="small" style="margin-top:12px;color:#aaa">This is a demo ad. Replace placeholder with your real ad code to show actual ads.</div>
+  </div>
+</div>
+
+<footer>
+  <div class="small">Demo only — for real payouts use secure backend & payment gateway.</div>
+</footer>
+
+<script>
+/* -----------------
+   Local storage model
+   -----------------*/
+const LS_USERS = 'pk_users_v2';
+const LS_CUR = 'pk_current_v2';
+
+function loadUsers(){return JSON.parse(localStorage.getItem(LS_USERS) || '{}')}
+function saveUsers(u){localStorage.setItem(LS_USERS, JSON.stringify(u))}
+function setCurrent(email){ localStorage.setItem(LS_CUR, email) }
+function getCurrent(){ return localStorage.getItem(LS_CUR) }
+function logoutNow(){ localStorage.removeItem(LS_CUR) }
+
+/* Default helpers */
+function formatCoins(n){ return Number(n).toFixed(0) }
+
+/* UI refs */
+const hdrUser = document.getElementById('hdrUser');
+const hdrBalance = document.getElementById('hdrBalance');
+
+/* NAV */
+document.querySelectorAll('#navBar .tab').forEach(t=>{
+  t.addEventListener('click', ()=>{ document.querySelectorAll('#navBar .tab').forEach(x=>x.classList.remove('active')); t.classList.add('active'); showSection(t.dataset.target); });
+});
+function showSection(id){
+  document.querySelectorAll('main section').forEach(s=>s.style.display='none');
+  const el = document.getElementById(id);
+  if(el) el.style.display='block';
+  // lazy renders
+  if(id==='tasks') renderTasks();
+  if(id==='games') { /* nothing extra */ }
+  if(id==='ads') { /* nothing */ }
+  if(id==='profile') renderProfile();
+}
+
+/* AUTH modal */
+document.getElementById('btnOpenAuth').addEventListener('click', ()=>{ openAuth() });
+function openAuth(){ document.getElementById('authModal').style.display='flex'; document.getElementById('authMsg').textContent=''; }
+function closeAuth(){ document.getElementById('authModal').style.display='none'; }
+
+/* Register / Login */
+document.getElementById('btnRegisterAuth').addEventListener('click', ()=>{
+  const name = document.getElementById('inName').value.trim();
+  const pass = document.getElementById('inPass').value;
+  if(!name || !pass){ document.getElementById('authMsg').textContent='Fill both fields'; document.getElementById('authMsg').style.color='red'; return; }
+  const users = loadUsers();
+  if(users[name]){ document.getElementById('authMsg').textContent='User exists'; document.getElementById('authMsg').style.color='red'; return; }
+  users[name] = {name:name, password:pass, balance:0, completed:[] , inbox:[], withdrawals:[] };
+  saveUsers(users);
+  setCurrent(name);
+  closeAuth();
+  refreshHeader();
+});
+document.getElementById('btnLoginAuth').addEventListener('click', ()=>{
+  const name = document.getElementById('inName').value.trim();
+  const pass = document.getElementById('inPass').value;
+  const users = loadUsers();
+  if(!users[name] || users[name].password !== pass){ document.getElementById('authMsg').textContent='Invalid credentials'; document.getElementById('authMsg').style.color='red'; return; }
+  setCurrent(name);
+  closeAuth();
+  refreshHeader();
+});
+
+/* refresh header on load */
+function refreshHeader(){
+  const cur = getCurrent(); const users = loadUsers();
+  if(cur && users[cur]){
+    hdrUser.textContent = users[cur].name + ' • ' + (users[cur].email || users[cur].name);
+    hdrBalance.textContent = 'Balance: ' + formatCoins(users[cur].balance || 0);
+  } else {
+    hdrUser.textContent = 'Not logged in';
+    hdrBalance.textContent = 'Balance: 0';
+  }
+}
+refreshHeader();
+showSection('home');
+
+/* -----------------
+   Tasks (infinite/random)
+   -----------------*/
+const SAMPLE_TASKS = [
+  'Signup to newsletter','Like our page','Share this demo','Complete profile','Watch tutorial'
+];
+function rand(min,max){ return Math.floor(Math.random()*(max-min+1))+min }
+function makeRandomTask(){
+  return SAMPLE_TASKS[Math.floor(Math.random()*SAMPLE_TASKS.length)] + ' • ' + Math.random().toString(36).substring(2,7);
+}
+function renderTasks(){
+  const cur = getCurrent(); const users = loadUsers();
+  const list = document.getElementById('tasksList'); list.innerHTML='';
+  for(let i=0;i<8;i++){
+    const t = makeRandomTask(); const reward = (rand(5,20)); // coins
+    const div = document.createElement('div'); div.className='card';
+    div.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center">
+      <div><strong>${t}</strong><div class="small">Reward: ${reward} coins</div></div>
+      <div><button class="btn">Complete</button></div>
+    </div>`;
+    const btn = div.querySelector('button');
+    btn.addEventListener('click', ()=>{
+      if(!cur){ alert('Login first'); return; }
+      users[cur].balance = (users[cur].balance||0) + reward;
+      saveUsers(users);
+      alert('Task complete! +' + reward + ' coins');
+      refreshHeader();
+    });
+    list.appendChild(div);
+  }
+}
+
+/* -----------------
+   Games
+   - Bubble: click/tap bubbles, reach target score -> reward
+   - Shooter: move aim, tap/click shoots, hit targets -> reward
+   both update balance in localStorage
+   -----------------*/
+
+/* Helpers to update stored balance */
+function addToBalance(amount){
+  const cur = getCurrent();
+  if(!cur){ alert('Login required'); return false; }
+  const users = loadUsers();
+  users[cur].balance = (users[cur].balance||0) + amount;
+  saveUsers(users);
+  refreshHeader();
+  return true;
+}
+
+/* --- Bubble Game --- */
+const bubbleCanvas = document.getElementById('bubbleCanvas');
+const bCtx = bubbleCanvas.getContext('2d');
+let bubbles = [], bubbleLoopId = null, bubbleScore = 0, bubbleRunning = false;
+document.getElementById('startBubble').addEventListener('click', ()=>startBubbleGame());
+
+function startBubbleGame(){
+  if(bubbleRunning) return;
+  bubbles = []; bubbleScore = 0; bubbleRunning = true;
+  document.getElementById('bubbleScore').textContent = 'Score: 0';
+  // spawn and animate
+  function spawnBubble(){
+    const r = rand(12,28);
+    bubbles.push({x: rand(r, bubbleCanvas.width - r), y: bubbleCanvas.height + r, r: r, speed: Math.random()*1.5+0.8});
+  }
+  const spawner = setInterval(()=>{ spawnBubble(); }, 600);
+  function loop(){
+    bCtx.clearRect(0,0,bubbleCanvas.width,bubbleCanvas.height);
+    // draw
+    for(let i=bubbles.length-1;i>=0;i--){
+      const b = bubbles[i];
+      b.y -= b.speed;
+      bCtx.beginPath();
+      bCtx.fillStyle = `hsla(${(b.x+b.y)%360},70%,60%,0.9)`;
+      bCtx.arc(b.x,b.y,b.r,0,Math.PI*2);
+      bCtx.fill();
+      if(b.y + b.r < -10) bubbles.splice(i,1);
+    }
+    bCtx.fillStyle = '#fff';
+    bCtx.font = '14px sans-serif';
+    bCtx.fillText('Score: ' + bubbleScore, 10, 18);
+    if(bubbleRunning) bubbleLoopId = requestAnimationFrame(loop);
+  }
+  loop();
+
+  // click / touch handler
+  function handler(e){
+    const rect = bubbleCanvas.getBoundingClientRect();
+    const cx = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+    const cy = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+    for(let i=bubbles.length-1;i>=0;i--){
+      const b = bubbles[i];
+      const d = Math.hypot(cx - b.x, cy - b.y);
+      if(d <= b.r){
+        bubbles.splice(i,1); bubbleScore++;
+        document.getElementById('bubbleScore').textContent = 'Score: ' + bubbleScore;
+      }
+    }
+    // end condition
+    if(bubbleScore >= 12){
+      stopBubbleGame();
+      if(addToBalance(6)) alert('Bubble complete! +6 coins');
+    }
+  }
+  bubbleCanvas.addEventListener('click', handler);
+  bubbleCanvas.addEventListener('touchstart', handler, {passive:false});
+
+  function stopBubbleGame(){
+    bubbleRunning = false;
+    clearInterval(spawner);
+    cancelAnimationFrame(bubbleLoopId);
+    bubbleCanvas.removeEventListener('click', handler);
+    bubbleCanvas.removeEventListener('touchstart', handler);
+  }
+
+  // also add a safety timeout (2 minutes)
+  setTimeout(()=>{ if(bubbleRunning){ stopBubbleGame(); } }, 2*60*1000);
+}
+
+/* --- Shooter Game --- */
+const shooterCanvas = document.getElementById('shooterCanvas');
+const sCtx = shooterCanvas.getContext('2d');
+let targets = [], bullets = [], shooterRunning=false, shooterLoop=null, shooterScore=0;
+
+document.getElementById('startShooter').addEventListener('click', ()=>startShooter());
+
+function startShooter(){
+  if(shooterRunning) return;
+  targets = []; bullets = []; shooterScore = 0; shooterRunning = true;
+  document.getElementById('shooterScore').textContent = 'Score: 0';
+  let playerX = shooterCanvas.width/2;
+
+  // spawn targets periodically
+  const spawnId = setInterval(()=>{ targets.push({x: rand(20, shooterCanvas.width-40), y: -30, speed: Math.random()*1.2+0.6}); }, 800);
+
+  // loop
+  function loop(){
+    sCtx.clearRect(0,0,shooterCanvas.width, shooterCanvas.height);
+    // draw player at bottom
+    sCtx.fillStyle = '#0f0';
+    sCtx.fillRect(playerX-12, shooterCanvas.height-24, 24, 20);
+    // update targets
+    for(let i=targets.length-1;i>=0;i--){
+      const t = targets[i];
+      t.y += t.speed;
+      sCtx.fillStyle = '#ff4d4d';
+      sCtx.fillRect(t.x, t.y, 26, 20);
+      if(t.y > shooterCanvas.height) targets.splice(i,1);
+    }
+    // bullets
+    for(let i=bullets.length-1;i>=0;i--){
+      const b = bullets[i]; b.y -= b.speed;
+      sCtx.fillStyle = '#ffea00'; sCtx.fillRect(b.x-2, b.y, 4, 10);
+      if(b.y < -10) bullets.splice(i,1);
+    }
+    // collisions
+    for(let bi=bullets.length-1;bi>=0;bi--){
+      for(let ti=targets.length-1;ti>=0;ti--){
+        const b = bullets[bi], t = targets[ti];
+        if(b.x > t.x && b.x < t.x+26 && b.y > t.y && b.y < t.y+20){
+          bullets.splice(bi,1);
+          targets.splice(ti,1);
+          shooterScore++;
+          document.getElementById('shooterScore').textContent = 'Score: ' + shooterScore;
+          break;
+        }
+      }
+    }
+
+    // auto win condition
+    if(shooterScore >= 6){
+      stopShooter();
+      if(addToBalance(8)) alert('Shooter complete! +8 coins');
+      return;
+    }
+    shooterLoop = requestAnimationFrame(loop);
+  }
+  loop();
+
+  // mouse move / touch controls
+  function moveHandler(e){
+    const rect = shooterCanvas.getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    let px = clientX - rect.left;
+    if(px < 12) px = 12;
+    if(px > shooterCanvas.width-12) px = shooterCanvas.width-12;
+    playerX = px;
+  }
+  function shootHandler(e){
+    const rect = shooterCanvas.getBoundingClientRect();
+    const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+    bullets.push({x:x, y: shooterCanvas.height-30, speed:6});
+  }
+  shooterCanvas.addEventListener('mousemove', moveHandler);
+  shooterCanvas.addEventListener('click', shootHandler);
+  shooterCanvas.addEventListener('touchmove', moveHandler, {passive:false});
+  shooterCanvas.addEventListener('touchstart', shootHandler);
+
+  function stopShooter(){
+    shooterRunning = false;
+    clearInterval(spawnId);
+    cancelAnimationFrame(shooterLoop);
+    shooterCanvas.removeEventListener('mousemove', moveHandler);
+    shooterCanvas.removeEventListener('click', shootHandler);
+    shooterCanvas.removeEventListener('touchmove', moveHandler);
+    shooterCanvas.removeEventListener('touchstart', shootHandler);
+  }
+
+  // safety timeout
+  setTimeout(()=>{ if(shooterRunning) stopShooter(); }, 3*60*1000);
+}
+
+/* -----------------
+   Ads (demo + real placeholder instructions)
+   -----------------*/
+const adOverlay = document.getElementById('adOverlay');
+const adText = document.getElementById('adText');
+const adCountdown = document.getElementById('adCountdown');
+
+document.getElementById('watchDemoAd').addEventListener('click', ()=>playDemoAd(5,5)); // 5s => 5 coins
+document.getElementById('watchLongDemo').addEventListener('click', ()=>playDemoAd(10,12));
+
+function playDemoAd(seconds = 5, reward = 5){
+  if(!getCurrent()){ alert('Please login to earn from ads'); return; }
+  adOverlay.style.display = 'flex';
+  adText.textContent = 'Demo Ad — watching...';
+  adCountdown.textContent = seconds;
+  let t = seconds;
+  const id = setInterval(()=>{
+    t--; adCountdown.textContent = t;
+    if(t<=0){
+      clearInterval(id);
+      adOverlay.style.display = 'none';
+      addToBalance(reward);
+      alert('Ad finished — you earned ' + reward + ' coins');
+    }
+  },1000);
+}
+
+/* -----------------
+   Profile
+   -----------------*/
+function renderProfile(){
+  const cur = getCurrent(); const users = loadUsers();
+  const area = document.getElementById('profileArea');
+  if(!cur || !users[cur]){ area.innerHTML = '<div class="small">Login to view profile</div>'; return; }
+  const bal = formatCoins(users[cur].balance||0);
+  const wds = users[cur].withdrawals || [];
+  const historyHtml = wds.length ? ('<ul style="padding-left:18px;margin:8px 0">'+ wds.map(w=>`<li class=small>${w.date} — ${w.amount} coins → ${w.method} (${w.detail}) [${w.status}]</li>`).join('') + '</ul>') : '<div class="small" style="color:#666">No withdrawals yet</div>';
+  area.innerHTML = `<div><strong>${cur}</strong></div>
+                    <div class="small">Balance: ${bal} coins</div>
+                    <div style="display:flex;gap:8px;margin-top:8px">
+                      <button class="btn" onclick="openWithdraw()">Withdraw</button>
+                      <button class="ghost" onclick="logout()">Logout</button>
+                    </div>
+                    <div class="card" style="margin-top:10px">
+                      <div class="small" style="font-weight:700">Withdrawal History</div>
+                      ${historyHtml}
+                    </div>`;
+}
+
+/* Simple logout button from UI */
+function logout(){ logoutNow(); refreshHeader(); showSection('home'); }
+
+/* -----------------
+   Withdrawal logic (new)
+   -----------------*/
+function openWithdraw(){
+  document.getElementById('wdAmount').value = '';
+  document.getElementById('wdDetail').value = '';
+  document.getElementById('wdMsg').textContent='';
+  document.getElementById('wdModal').style.display='flex';
+}
+function closeWithdraw(){ document.getElementById('wdModal').style.display='none'; }
+
+function submitWithdraw(){
+  const cur = getCurrent(); if(!cur){ alert('Login required'); return; }
+  const users = loadUsers(); const u = users[cur];
+  const amt = Number(document.getElementById('wdAmount').value);
+  const method = document.getElementById('wdMethod').value;
+  const detail = document.getElementById('wdDetail').value.trim();
+  const msg = document.getElementById('wdMsg');
+  msg.style.color = 'red';
+
+  if(!amt || amt<=0){ msg.textContent = 'Enter a valid amount'; return; }
+  if(!detail){ msg.textContent = 'Enter your payment detail'; return; }
+
+  const bal = Number(u.balance||0);
+  const MIN_WD = 10; // keep small for demo
+  if(amt < MIN_WD){ msg.textContent = `Minimum withdraw is ${MIN_WD} coins`; return; }
+  if(amt > bal){ msg.textContent = 'Insufficient balance'; return; }
+
+  // Deduct and record (demo only)
+  u.balance = bal - amt;
+  const rec = { amount: amt, method, detail, status: 'Processed (demo)', date: new Date().toLocaleString() };
+  u.withdrawals = u.withdrawals || [];
+  u.withdrawals.unshift(rec);
+  saveUsers(users);
+  refreshHeader();
+  renderProfile();
+
+  msg.style.color = 'green';
+  msg.textContent = 'withdrawal successful apna account check karo';
+  // Optional alert for extra visibility
+  alert('withdrawal successful apna account check karo');
+
+  setTimeout(()=>{ closeWithdraw(); }, 800);
+}
+
+/* -----------------
+   Init / sample user (optional)
+   -----------------*/
+// create a sample user on first run for convenience (comment out if not wanted)
+(function ensureTestUser(){
+  const users = loadUsers();
+  if(!users['demo']){ users['demo'] = {name:'Demo', password:'demo', balance:25, completed:[], inbox:[], withdrawals:[]}; saveUsers(users); }
+})();
+
+/* final header refresh */
+refreshHeader();
+
+</script>
+</body>
+</html>
